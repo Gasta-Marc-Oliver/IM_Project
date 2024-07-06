@@ -3,9 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enrollment System - MALS</title>
+    <title>Enrollment Website</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="scripts.js" defer></script>
 </head>
 <body>
-    
+    <header>
+        <h1>Enrollment System</h1>
+    </header>
+    <main>
+        <section id="enrollment-form">
+            <h2>Enroll Student</h2>
+            <form action="enroll.php" method="post">
+                <!-- Form fields for student enrollment -->
+                <input type="text" name="student_name" placeholder="Student Name" required>
+                <input type="text" name="grade_level" placeholder="Grade Level" required>
+                <input type="text" name="parent_name" placeholder="Parent Name" required>
+                <button type="submit">Enroll</button>
+            </form>
+        </section>
+        <section id="students-list">
+            <h2>Enrolled Students</h2>
+            <!-- Table to display enrolled students -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Grade Level</th>
+                        <th>Parent Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be populated by PHP -->
+                    <?php
+                    include 'db_connect.php';
+                    $sql = "SELECT students.name, grade_level.level, parents.name AS parent_name FROM students JOIN grade_level ON students.grade_level_id = grade_level.id JOIN parents ON students.parent_id = parents.id";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                            echo "<tr>
+                                    <td>{$row['name']}</td>
+                                    <td>{$row['level']}</td>
+                                    <td>{$row['parent_name']}</td>
+                                    <td>
+                                        <a href='edit.php?id={$row['id']}'>Edit</a>
+                                        <a href='delete.php?id={$row['id']}'>Delete</a>
+                                    </td>
+                                  </tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='4'>No students enrolled yet.</td></tr>";
+                    }
+                    $conn->close();
+                    ?>
+                </tbody>
+            </table>
+        </section>
+    </main>
 </body>
 </html>
