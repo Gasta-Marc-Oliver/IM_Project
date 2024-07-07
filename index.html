@@ -21,17 +21,17 @@
         <section id="enrollment-form" style="display:none;">
             <h2>Enroll Student</h2>
             <form action="enroll.php" method="post">
-                <input type="text" name="first_name" placeholder="First Name" required>
-                <input type="text" name="last_name" placeholder="Last Name" required>
-                <input type="text" name="lrn" placeholder="Learning Reference Number" required>
-                <select name="year_level" required>
+                <input type="text" name="F_name" placeholder="First Name" required>
+                <input type="text" name="L_name" placeholder="Last Name" required>
+                <input type="text" name="LRN" placeholder="Learning Reference Number" required>
+                <select name="Level" required>
                     <option value="" disabled selected>Year Level</option>
                     <option value="Kindergarten">Kindergarten</option>
                     <option value="Pre-Kindergarten">Pre-Kindergarten</option>
                     <option value="Nursery">Nursery</option>
                 </select>
-                <input type="number" name="age" placeholder="Age" required>
-                <select name="gender" required>
+                <input type="number" name="Age" placeholder="Age" required>
+                <select name="Gender" required>
                     <option value="" disabled selected>Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -64,12 +64,12 @@
                     if ($result->num_rows > 0) {
                         while($row = $result->fetch_assoc()) {
                             echo "<tr>
-                                    <td>{$row['first_name']}</td>
-                                    <td>{$row['last_name']}</td>
-                                    <td>{$row['lrn']}</td>
-                                    <td>{$row['year_level']}</td>
-                                    <td>{$row['age']}</td>
-                                    <td>{$row['gender']}</td>
+                                    <td>{$row['F_name']}</td>
+                                    <td>{$row['L_name']}</td>
+                                    <td>{$row['LRN']}</td>
+                                    <td>{$row['Level']}</td>
+                                    <td>{$row['Age']}</td>
+                                    <td>{$row['Gender']}</td>
                                     <td>
                                         <a href='edit.php?id={$row['id']}'>Edit</a>
                                         <a href='delete.php?id={$row['id']}'>Delete</a>
