@@ -5,48 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enrollment Website</title>
     <link rel="stylesheet" href="style.css">
-    <script src="scripts.js" defer></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <header>
         <h1>Enrollment System</h1>
     </header>
     <main>
-        <section id="enrollment-form">
+        <section id="initial-choice">
+            <h2>Choose an Action</h2>
+            <button onclick="showEnrollmentForm()">Enroll a Student</button>
+            <button onclick="showStudentsList()">View Enrolled Students</button>
+        </section>
+        
+        <section id="enrollment-form" style="display:none;">
             <h2>Enroll Student</h2>
             <form action="enroll.php" method="post">
-                <!-- Form fields for student enrollment -->
-                <input type="text" name="student_name" placeholder="Student Name" required>
-                <input type="text" name="grade_level" placeholder="Grade Level" required>
-                <input type="text" name="parent_name" placeholder="Parent Name" required>
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
+                <input type="text" name="lrn" placeholder="Learning Reference Number" required>
+                <select name="year_level" required>
+                    <option value="" disabled selected>Year Level</option>
+                    <option value="Kindergarten">Kindergarten</option>
+                    <option value="Pre-Kindergarten">Pre-Kindergarten</option>
+                    <option value="Nursery">Nursery</option>
+                </select>
+                <input type="number" name="age" placeholder="Age" required>
+                <select name="gender" required>
+                    <option value="" disabled selected>Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
                 <button type="submit">Enroll</button>
             </form>
         </section>
-        <section id="students-list">
+        
+        <section id="students-list" style="display:none;">
             <h2>Enrolled Students</h2>
-            <!-- Table to display enrolled students -->
             <table>
                 <thead>
                     <tr>
-                        <th>Student Name</th>
-                        <th>Grade Level</th>
-                        <th>Parent Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>LRN</th>
+                        <th>Year Level</th>
+                        <th>Age</th>
+                        <th>Gender</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Rows will be populated by PHP -->
                     <?php
                     include 'db_connect.php';
-                    $sql = "SELECT students.name, grade_level.level, parents.name AS parent_name FROM students JOIN grade_level ON students.grade_level_id = grade_level.id JOIN parents ON students.parent_id = parents.id";
+                    $sql = "SELECT * FROM students";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
                         while($row = $result->fetch_assoc()) {
                             echo "<tr>
-                                    <td>{$row['name']}</td>
-                                    <td>{$row['level']}</td>
-                                    <td>{$row['parent_name']}</td>
+                                    <td>{$row['first_name']}</td>
+                                    <td>{$row['last_name']}</td>
+                                    <td>{$row['lrn']}</td>
+                                    <td>{$row['year_level']}</td>
+                                    <td>{$row['age']}</td>
+                                    <td>{$row['gender']}</td>
                                     <td>
                                         <a href='edit.php?id={$row['id']}'>Edit</a>
                                         <a href='delete.php?id={$row['id']}'>Delete</a>
@@ -54,7 +77,7 @@
                                   </tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='4'>No students enrolled yet.</td></tr>";
+                        echo "<tr><td colspan='7'>No students enrolled yet.</td></tr>";
                     }
                     $conn->close();
                     ?>
